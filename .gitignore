@@ -1,2 +1,3 @@
+*.swp
 appengine-clj.jar
 classes
