@@ -1,0 +1,41 @@
+<project name="appengine-clj" basedir="." default="compile">
+  
+  <property name="sdk.dir" location="../appengine-java-sdk" />
+  <property name="classes.dir" value="classes" />
+  <property name="lib.dir" value="lib" />
+  <property name="src.dir" value="src" />
+  <property name="jar.file" value="appengine-clj.jar" />
+  
+  <path id="project.classpath">
+    <pathelement path="${classes.dir}" />
+    <fileset dir="${lib.dir}">
+      <include name="**/*.jar" />
+    </fileset>
+    <fileset dir="${sdk.dir}/lib">
+      <include name="**/*.jar" />
+    </fileset>
+  </path>
+  
+  <target name="clean">
+    <delete dir="${classes.dir}" />
+    <delete file="${jar.file}" />
+  </target>
+  
+  <target name="init">
+    <mkdir dir="${classes.dir}" />
+  </target>
+  
+  <target name="compile" depends="clean,init">
+    <java classname="clojure.lang.Compile" classpathref="project.classpath" failonerror="true">
+      <classpath path="${src.dir}" />
+      <sysproperty key="clojure.compile.path" value="${classes.dir}" />
+      <arg value="appengine-clj.users" />
+    </java>
+  </target>
+  
+  <target name="jar" depends="compile">
+    <jar jarfile="${jar.file}" basedir="${classes.dir}" />
+  </target>
+
+</project>
+
