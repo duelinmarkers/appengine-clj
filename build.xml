@@ -4,6 +4,7 @@
   <property name="classes.dir" value="classes" />
   <property name="lib.dir" value="lib" />
   <property name="src.dir" value="src" />
+  <property name="test.dir" value="test" />
   <property name="jar.file" value="appengine-clj.jar" />
   
   <path id="project.classpath">
@@ -30,10 +31,30 @@
       <classpath path="${src.dir}" />
       <sysproperty key="clojure.compile.path" value="${classes.dir}" />
       <arg value="appengine-clj.users" />
+      <arg value="appengine-clj.datastore" />
+      <arg value="appengine-clj.test-utils" />
     </java>
   </target>
   
-  <target name="jar" depends="compile">
+  <target name="repl">
+    <java classname="clojure.main" classpathref="project.classpath" fork="true" failonerror="true">
+      <classpath path="${src.dir}" />
+      <classpath path="${test.dir}" />
+    </java>
+  </target>
+  
+  <target name="test" depends="compile">
+    <java classname="clojure.main" classpathref="project.classpath" fork="true" failonerror="true">
+      <classpath path="${test.dir}" />
+      <arg value="-e" />
+      <arg value="
+	      (use 'clojure.contrib.test-is)
+	      (require 'appengine-clj.datastore-test)
+	      (run-tests 'appengine-clj.datastore-test)" />
+    </java>
+  </target>
+  
+  <target name="jar" depends="compile,test">
     <jar jarfile="${jar.file}" basedir="${classes.dir}" />
   </target>
 
