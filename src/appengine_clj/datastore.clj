@@ -7,6 +7,6 @@
   plus the entity's kind stored under :kind."
   [entity]
   (reduce #(assoc %1 (keyword (key %2)) (val %2))
-    {:kind (.getKind entity)}
+    {:kind (.getKind entity) :key (.getKey entity)}
     (.entrySet (.getProperties entity))))
 
