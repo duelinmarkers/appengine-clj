@@ -37,3 +37,9 @@
       (is (= "hume" (.getProperty created-entity "name")))
       (is (= 31 (.getProperty created-entity "age"))))))
 
+(dstest create-can-create-a-child-entity-from-a-parent-key
+  (let [parent (ds/create {:kind "Mother" :name "mama"})
+        child (ds/create {:kind "Child" :name "baby"} (parent :key))]
+    (is (= (parent :key) (.getParent (child :key))))
+    (is (= [child] (ds/find-all (doto (Query. "Child" (parent :key))))))))
+
