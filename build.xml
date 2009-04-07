@@ -1,6 +1,6 @@
 <project name="appengine-clj" basedir="." default="compile">
   
-  <property name="sdk.dir" location="../appengine-java-sdk" />
+  <property name="sdk.dir" location="../appengine-java-sdk-1.2.0" />
   <property name="classes.dir" value="classes" />
   <property name="lib.dir" value="lib" />
   <property name="src.dir" value="src" />
@@ -50,7 +50,8 @@
       <arg value="
 	      (use 'clojure.contrib.test-is)
 	      (require 'appengine-clj.datastore-test)
-	      (run-tests 'appengine-clj.datastore-test)" />
+	      (require 'appengine-clj.users-test)
+	      (apply run-tests '[appengine-clj.datastore-test appengine-clj.users-test])" />
     </java>
   </target>
   
