@@ -29,3 +29,11 @@
   (is (= ["jim"] (map :name (ds/find-all (doto (Query. "A") (.addFilter "code" Query$FilterOperator/EQUAL 1))))))
   (is (= ["jan"] (map :name (ds/find-all (doto (Query. "B") (.addFilter "code" Query$FilterOperator/EQUAL 1)))))))
 
+(dstest create-saves-and-returns-item-with-a-key
+  (let [created-item (ds/create {:kind "MyKind" :name "hume" :age 31})]
+    (is (not (nil? (created-item :key))))
+    (let [created-entity (.get (DatastoreServiceFactory/getDatastoreService) (created-item :key))]
+      (is (= "MyKind" (.getKind created-entity)))
+      (is (= "hume" (.getProperty created-entity "name")))
+      (is (= 31 (.getProperty created-entity "age"))))))
+
