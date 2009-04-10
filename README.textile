@@ -1,6 +1,6 @@
 h1. appengine-clj
 
-Clojure library aimed at making life on Google AppEngine clean and easy for a Clojure app.
+Library aimed at making life on Google AppEngine clean and easy for a Clojure app.
 
 h2. appengine-clj.users
 
@@ -18,7 +18,7 @@ It allows you to work with immutable data structures instead of mutable Entity i
 
 <pre><code>(require '[appengine-clj.datastore :as ds])
 (ds/create {:kind "Person" :name "Jimmmy" :age 25})
-=> {:kind "Person" :key #<Key Person(1138)> :name "Jimmy" :age 25}</code></pre>
+=> {:kind "Person" :key #<Key Person(1138)> :name "Jimmmy" :age 25}</code></pre>
 
 h2. appengine-clj.test-utils
 
