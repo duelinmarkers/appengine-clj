@@ -6,6 +6,7 @@
   (:import (com.google.appengine.api.datastore
              DatastoreServiceFactory
              Entity
+             EntityNotFoundException
              Query
              Query$FilterOperator
              Query$SortDirection)))
@@ -42,4 +43,9 @@
         child (ds/create {:kind "Child" :name "baby"} (parent :key))]
     (is (= (parent :key) (.getParent (child :key))))
     (is (= [child] (ds/find-all (doto (Query. "Child" (parent :key))))))))
+
+(dstest delete-by-key
+  (let [key (:key (ds/create {:kind "MyKind"}))]
+    (ds/delete key)
+    (is (thrown? EntityNotFoundException (ds/get key)))))
 
