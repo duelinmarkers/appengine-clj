@@ -16,7 +16,7 @@
 (defn get
   "Retrieves the identified entity or raises EntityNotFoundException."
   [#^Key key]
-  (.get (DatastoreServiceFactory/getDatastoreService) key))
+  (entity-to-map (.get (DatastoreServiceFactory/getDatastoreService) key)))
 
 (defn find-all
   "Executes the given com.google.appengine.api.datastore.Query

@@ -44,8 +44,20 @@
     (is (= (parent :key) (.getParent (child :key))))
     (is (= [child] (ds/find-all (doto (Query. "Child" (parent :key))))))))
 
+(dstest get-given-a-key-returns-a-mapified-entity
+  (let [key (:key (ds/create {:kind "Person" :name "cliff"}))]
+    (is (= "cliff" ((ds/get key) :name)))))
+
 (dstest delete-by-key
   (let [key (:key (ds/create {:kind "MyKind"}))]
     (ds/delete key)
     (is (thrown? EntityNotFoundException (ds/get key)))))
+
+(dstest delete-by-multiple-keys
+  (let [key1 (:key (ds/create {:kind "MyKind"}))
+        key2 (:key (ds/create {:kind "MyKind"}))]
+    (ds/delete key1 key2)
+    (are (thrown? EntityNotFoundException (ds/get _1))
+         key1
+         key2)))
 
