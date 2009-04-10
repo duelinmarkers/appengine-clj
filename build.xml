@@ -1,4 +1,4 @@
-<project name="appengine-clj" basedir="." default="compile">
+<project name="appengine-clj" basedir="." default="test">
   
   <property name="sdk.dir" location="../appengine-java-sdk-1.2.0" />
   <property name="classes.dir" value="classes" />
