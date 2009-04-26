@@ -1,5 +1,6 @@
 <project name="appengine-clj" basedir="." default="test">
   
+  <property environment="env" />
   <property name="sdk.dir" location="../appengine-java-sdk-1.2.0" />
   <property name="classes.dir" value="classes" />
   <property name="lib.dir" value="lib" />
@@ -58,6 +59,17 @@
   <target name="jar" depends="compile,test">
     <jar jarfile="${jar.file}" basedir="${classes.dir}" />
   </target>
-
+  
+  <target name="vim" description="Run ng server for VimClojure">
+    <java classname="com.martiansoftware.nailgun.NGServer" dir="${src.dir}" fork="true">
+      <arg value="127.0.0.1" />
+      <classpath>
+        <pathelement path="${src.dir}" />
+        <pathelement path="${test.dir}" />
+	<pathelement location="${env.HOME}/.vim/vimclojure.jar" />
+        <path refid="project.classpath" />
+      </classpath>
+    </java>
+  </target>
 </project>
 
