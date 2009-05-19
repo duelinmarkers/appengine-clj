@@ -3,3 +3,5 @@ lib/*.jar
 appengine-clj.jar
 classes
 datastore-indexes-auto.xml
+*~
+lib
