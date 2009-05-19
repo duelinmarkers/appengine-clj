@@ -39,6 +39,14 @@
       (.put (DatastoreServiceFactory/getDatastoreService) entity)
       (entity-to-map entity))))
 
+(defn update
+  "Takes a map of properties and updates or adds to the identified Entity"
+  [properties #^Key key]
+  (let [entity (.get (DatastoreServiceFactory/getDatastoreService) key)]
+    (doseq [[prop-name value] properties] (.setProperty entity (name prop-name) value))
+    (.put (DatastoreServiceFactory/getDatastoreService) entity)
+    (entity-to-map entity)))
+
 (defn delete
   "Deletes the identified entities."
   [& #^Key keys]
