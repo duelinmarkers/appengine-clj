@@ -13,7 +13,9 @@
   (ApiProxy/setEnvironmentForCurrentThread
     (proxy [com.google.apphosting.api.ApiProxy$Environment] []
       (getAppId [] "test")
-      (getVersionId [] "1.0"))))
+      (getVersionId [] "1.0")
+      (getRequestNamespace [] "")
+      (getAttributes [] (java.util.HashMap.)))))
 
 (defn ds-teardown []
   (ApiProxy/clearEnvironmentForCurrentThread)
