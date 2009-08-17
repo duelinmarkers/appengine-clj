@@ -21,9 +21,10 @@
     (application (assoc request :appengine-clj/user-info (user-info)))))
 
 (defn wrap-requiring-login
-  [application]
-  (fn [request]
-    (let [{:keys [user-service]} (user-info request)]
-      (if (.isUserLoggedIn user-service)
-        (application request)
-        {:status 302 :headers {"Location" (.createLoginURL user-service "/")}}))))
+  ([application] (wrap-requiring-login application "/"))
+  ([application url]
+    (fn [request]
+      (let [{:keys [user-service]} (user-info request)]
+        (if (.isUserLoggedIn user-service)
+          (application request)
+          {:status 302 :headers {"Location" (.createLoginURL user-service url)}})))))
