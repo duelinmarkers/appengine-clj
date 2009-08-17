@@ -19,5 +19,12 @@
                (wrapped-app-with-url request))))
       (let [wrapped-app-with-no-url (users/wrap-requiring-login #(throw (Exception.)))]
         (is (= {:status 302 :headers {"Location" "/login?then=/"}}
-               (wrapped-app-with-no-url request)))))))
+               (wrapped-app-with-no-url request))))))
+  (testing "allows request to pass when user is logged in"
+    (let [fake-user-service (proxy [com.google.appengine.api.users.UserService] []
+                              (isUserLoggedIn [] true))
+          request {:appengine-clj/user-info {:user nil :user-service fake-user-service}}]
+      (let [wrapped-app (users/wrap-requiring-login (fn [request] {:status 200 :body "Hello"}))]
+        (is (= {:status 200 :body "Hello"}
+               (wrapped-app request)))))))
 
