@@ -23,8 +23,11 @@
   (testing "allows request to pass when user is logged in"
     (let [fake-user-service (proxy [com.google.appengine.api.users.UserService] []
                               (isUserLoggedIn [] true))
-          request {:appengine-clj/user-info {:user nil :user-service fake-user-service}}]
-      (let [wrapped-app (users/wrap-requiring-login (fn [request] {:status 200 :body "Hello"}))]
-        (is (= {:status 200 :body "Hello"}
-               (wrapped-app request)))))))
+          request {:appengine-clj/user-info {:user "instance of User" :user-service fake-user-service}}
+          dummy-response {:status 200 :body "Hello"}
+          dummy-app (fn [request] dummy-response)]
+      (let [wrapped-app-with-url (users/wrap-requiring-login dummy-app "/the_path")]
+        (is (= dummy-response (wrapped-app-with-url request))))
+      (let [wrapped-app-with-no-url (users/wrap-requiring-login dummy-app)]
+        (is (= dummy-response (wrapped-app-with-no-url request)))))))
 
