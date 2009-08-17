@@ -23,7 +23,7 @@
 (defn wrap-requiring-login
   [application]
   (fn [request]
-    (let [{:keys [user-service]} (:appengine-clj/user-info request)]
+    (let [{:keys [user-service]} (user-info request)]
       (if (.isUserLoggedIn user-service)
         (application request)
-        {:status 302 :headers {"Location" (.createLoginURL user-service)}}))))
+        {:status 302 :headers {"Location" (.createLoginURL user-service "/")}}))))
