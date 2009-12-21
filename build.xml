@@ -1,7 +1,7 @@
-<project name="appengine-clj" basedir="." default="test">
+<project name="appengine-clj" basedir="." default="jar">
   
   <property environment="env" />
-  <property name="sdk.dir" location="../appengine-java-sdk-1.2.0" />
+  <property name="sdk.dir" location="/home/ancient/local/opt/appengine-java-sdk" />
   <property name="classes.dir" value="classes" />
   <property name="lib.dir" value="lib" />
   <property name="src.dir" value="src" />
@@ -16,6 +16,12 @@
     <fileset dir="${sdk.dir}/lib">
       <include name="**/*.jar" />
     </fileset>
+    <fileset dir="../clojure">
+      <include name="**/*.jar" />
+    </fileset>
+    <fileset dir="../clojure-contrib">
+      <include name="**/*.jar" />
+    </fileset>
   </path>
   
   <target name="clean">
@@ -25,6 +31,7 @@
   
   <target name="init">
     <mkdir dir="${classes.dir}" />
+    <mkdir dir="${lib.dir}" />
   </target>
   
   <target name="compile" depends="clean,init">

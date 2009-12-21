@@ -1,6 +1,6 @@
 (ns appengine-clj.datastore
   (:import (com.google.appengine.api.datastore
-            DatastoreServiceFactory Entity Key Query))
+            DatastoreServiceFactory Entity Key Query KeyFactory))
   (:refer-clojure :exclude [get]))
 
 
@@ -13,10 +13,23 @@
     {:kind (.getKind entity) :key (.getKey entity)}
     (.entrySet (.getProperties entity))))
 
+(defn map-to-entity [map]
+  (reduce #(do (.setProperty %1 (name (first %2)) (second %2))
+               %1)
+          (Entity. (:key map))
+          (dissoc map :key)))
+
 (defn get
   "Retrieves the identified entity or raises EntityNotFoundException."
   [#^Key key]
   (entity-to-map (.get (DatastoreServiceFactory/getDatastoreService) key)))
+
+(defn put [map]
+  (.put (DatastoreServiceFactory/getDatastoreService)
+        (map-to-entity map)))
+
+(defn create-key [kind id]
+  (KeyFactory/createKey kind (Long/valueOf (String/valueOf id))))
 
 (defn find-all
   "Executes the given com.google.appengine.api.datastore.Query
