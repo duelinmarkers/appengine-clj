@@ -44,6 +44,13 @@
     (is (= (parent :key) (.getParent (child :key))))
     (is (= [child] (ds/find-all (doto (Query. "Child" (parent :key))))))))
 
+(dstest create-with-struct
+        (defstruct person :name :kind)
+        (let [person (ds/create (struct person "jim" "child"))]
+          (is (not (nil? (:key person))))
+          (is (= (:name person) "jim"))
+          (is (= (:kind person) "child"))))
+
 (dstest get-given-a-key-returns-a-mapified-entity
   (let [key (:key (ds/create {:kind "Person" :name "cliff"}))]
     (is (= "cliff" ((ds/get key) :name)))))

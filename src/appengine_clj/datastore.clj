@@ -27,13 +27,13 @@
     (map entity-to-map results)))
 
 (defn create
-  "Takes a map of keyword-value pairs and puts a new Entity in the Datastore.
-  The map must include a :kind String.
+  "Takes a map of keyword-value pairs or struct and puts a new Entity in the Datastore.
+  The map or struct must include a :kind String.
   Returns the saved Entity converted with entity-to-map (which will include the assigned :key)."
   ([item] (create item nil))
   ([item #^Key parent-key]
     (let [kind (item :kind)
-          properties (dissoc item :kind)
+          properties (dissoc (merge {} item) :kind) ; converts struct to map
           entity (if parent-key (Entity. kind parent-key) (Entity. kind))]
       (doseq [[prop-name value] properties] (.setProperty entity (name prop-name) value))
       (.put (DatastoreServiceFactory/getDatastoreService) entity)
