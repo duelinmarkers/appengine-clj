@@ -68,3 +68,9 @@
          key1
          key2)))
 
+(dstest update-with-struct
+        (defstruct person :name :kind)
+        (let [person (ds/update {:name "tom"} (:key (ds/create (struct person "jim" "child"))))]
+          (is (not (nil? (:key person))))
+          (is (= (:name person) "tom"))
+          (is (= (:kind person) "child"))))
